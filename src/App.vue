@@ -84,7 +84,7 @@ const applyPreset = (pI) => {
 }
 
 const CSSGradient = computed(() => {
-    const cs = colorSteps.value;
+    const cs = JSON.parse(JSON.stringify(colorSteps.value));
     const gradientValues = cs.sort((a, b) => a.position - b.position).map((e) => e.color + " " + e.position.toString() + "%").join(",");
     return 'background-image: linear-gradient(to right, ' + gradientValues + ')';
 });
