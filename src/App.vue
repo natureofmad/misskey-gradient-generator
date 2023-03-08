@@ -80,7 +80,7 @@ const applyPreset = (pI) => {
     if (isNaN(pI)) {
         return;
     }
-    colorSteps.value = presets[pI].steps;
+    colorSteps.value = JSON.parse(JSON.stringify(presets[pI].steps));
 }
 
 const CSSGradient = computed(() => {
