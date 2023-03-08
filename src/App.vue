@@ -13,6 +13,34 @@ const presets = [
             {"color":"#0000ff","position":83},
             {"color":"#800080","position":100}
         ]
+    },
+    {
+        name: "黄桃",
+        steps: [
+            {color: "#fa709a", position: 0},
+            {color: "#fee140", position: 100}
+        ]
+    },
+    {
+        name: "もえるオレンジ",
+        steps: [
+            {color: "#f83600", position: 0},
+            {color: "#f9d423", position: 100}
+        ]
+    },
+    {
+        name: "サイバー青",
+        steps: [
+            {color: "#6a11cb", position: 0},
+            {color: "#2575fc", position: 100}
+        ]
+    },
+    {
+        name: "サイバーピンク",
+        steps: [
+            {color: "#c471f5", position: 0},
+            {color: "#fa71cd", position: 100}
+        ]
     }
 ];
 
