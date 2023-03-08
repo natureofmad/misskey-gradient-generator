@@ -148,7 +148,8 @@ const copyText = () => {
             <div class="col-lg-10 col-sm-8">
                 <div class="input-group">
                     <input type="text" class="form-control" readonly disabled :value="generatedText" />
-                    <button class="btn btn-primary" @click="copyText()">コピーする</button>
+                    <button class="btn btn-outline-primary" @click="copyText()">コピー</button>
+                    <a :href="`https://misskey.io/share?text=${encodeURIComponent(generatedText)}`" class="btn btn-success" target="_blank">ノートする</a>
                 </div>
             </div>
         </div>
