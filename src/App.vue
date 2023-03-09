@@ -53,6 +53,22 @@ const presets = [
             {color: "#c471f5", position: 0},
             {color: "#fa71cd", position: 100}
         ]
+    },
+    {
+        name: "Parade_1",
+        steps: [
+            {color: "#fa5c2d", position: 0},
+            {color: "#76e0f8", position: 50},
+            {color: "#fe84bc", position: 100}
+        ]
+    },
+    {
+        name: "Parade_2",
+        steps: [
+            {color: "#ffd584", position: 0},
+            {color: "#9ef6de", position: 50},
+            {color: "#8440ef", position: 100}
+        ]
     }
 ];
 
