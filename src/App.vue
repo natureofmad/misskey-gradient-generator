@@ -95,6 +95,10 @@ const applyPreset = (pI) => {
     colorSteps.value = JSON.parse(JSON.stringify(presets[pI].steps));
 }
 
+function sanitizeHTMLString(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 const CSSGradient = computed(() => {
     const cs = JSON.parse(JSON.stringify(colorSteps.value));
     const gradientValues = cs.sort((a, b) => a.position - b.position).map((e) => e.color + " " + e.position.toString() + "%").join(",");
@@ -133,10 +137,10 @@ const generatedHTML = computed(() => {
         const afterRGB = colorSteps.value[i + 1]?.color.substring(1).match(/.{2}/g).map((f) => parseInt(f, 16)) || null;
         return e.split("").map((f, j, a) => {
             if (afterRGB == null) {
-                return `<span style="color: #${colorSteps.value[i].color}">${f}</span>`;
+                return `<span style="color: #${colorSteps.value[i].color}">${sanitizeHTMLString(f)}</span>`;
             }
             const steppedRGB = beforeRGB.map((e, i) => (e - Math.floor((e - afterRGB[i]) / a.length * j)).toString(16).padStart(2, "0")).join("");
-            return `<span style="color: #${steppedRGB}">${f}</span>`;
+            return `<span style="color: #${steppedRGB}">${sanitizeHTMLString(f)}</span>`;
         }).join("");
     }).join("");
 });
@@ -173,7 +177,7 @@ const copyText = () => {
                     <div class="flex-shrink-0 me-2">
                         <div class="input-group">
                             <input class="form-control form-control-color flex-grow-0" style="width: 3rem;" type="color" v-model="item.color" />
-                            <input class="form-control font-monospace" type="text" style="width: calc(8ch + 1.5rem);" v-model="item.color" />
+                            <input class="form-control font-monospace" maxlength="7" type="text" style="width: calc(8ch + 1.5rem);" v-model="item.color" />
                         </div>
                     </div>
                     <div class="flex-grow-1 me-2">
@@ -199,6 +203,7 @@ const copyText = () => {
             <label for="startColor" class="col-lg-2 col-sm-4 col-form-label">ノートしたい文字</label>
             <div class="col-lg-10 col-sm-8">
                 <input type="text" class="form-control" v-model="text" placeholder="いまどうしてる？" />
+                <div id="emailHelp" class="form-text">ここでは平文のみを入力（その他の書式設定は生成後に行う）</div>
             </div>
         </div>
         <div class="my-2 row">
@@ -233,5 +238,6 @@ const copyText = () => {
     overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
+    font-weight: 700;
 }
 </style>
