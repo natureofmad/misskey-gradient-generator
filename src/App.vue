@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 
 const presets = [
-    {
+{
         name: "レインボー",
         steps: [
             {"color":"#ff0000","position":0},
@@ -12,6 +12,18 @@ const presets = [
             {"color":"#00ffff","position":67},
             {"color":"#0000ff","position":83},
             {"color":"#800080","position":100}
+        ]
+    },
+    {
+        name: "レインボー改",
+        steps: [
+            {"color":"#ff0000","position":0},
+            {"color":"#ffa500","position":17},
+            {"color":"#ffff00","position":33},
+            {"color":"#00ff00","position":50},
+            {"color":"#00ffff","position":67},
+            {"color":"#0000ff","position":83},
+            {"color":"#ff00ff","position":100}
         ]
     },
     {
@@ -67,7 +79,7 @@ const addColorStep = () => {
 };
 
 const equializeColorStep = () => {
-    colorSteps.value.forEach((e, i) => {
+    colorSteps.value.sort((a, b) => a.position - b.position).forEach((e, i) => {
         e.position = Math.round(100 / (colorSteps.value.length - 1) * i);
     });
 };
@@ -109,6 +121,26 @@ const generatedText = computed(() => {
     }).join("");
 });
 
+const generatedHTML = computed(() => {
+    if (text.value == "" || colorSteps.value.length < 2) return;
+    const splitCount = colorSteps.value.map((e) => Math.round(e.position / 100 * text.value.length));
+    let chunks = [];
+    for (let index = 0; index < splitCount.length - 1; index++) {
+        chunks[index] = text.value.substring(splitCount[index], splitCount[index + 1]);
+    }
+    return chunks.map((e, i) => {
+        const beforeRGB = colorSteps.value[i]?.color.substring(1).match(/.{2}/g).map((f) => parseInt(f, 16));
+        const afterRGB = colorSteps.value[i + 1]?.color.substring(1).match(/.{2}/g).map((f) => parseInt(f, 16)) || null;
+        return e.split("").map((f, j, a) => {
+            if (afterRGB == null) {
+                return `<span style="color: #${colorSteps.value[i].color}">${f}</span>`;
+            }
+            const steppedRGB = beforeRGB.map((e, i) => (e - Math.floor((e - afterRGB[i]) / a.length * j)).toString(16).padStart(2, "0")).join("");
+            return `<span style="color: #${steppedRGB}">${f}</span>`;
+        }).join("");
+    }).join("");
+});
+
 const copyText = () => {
     if (!navigator.clipboard) {
         alert("このブラウザは対応していません");
@@ -140,8 +172,8 @@ const copyText = () => {
                 <div class="d-flex mb-2" v-for="item, index in colorSteps">
                     <div class="flex-shrink-0 me-2">
                         <div class="input-group">
-                            <input class="form-control form-control-color" style="width: 3rem;" type="color" v-model="item.color" />
-                            <span class="input-group-text font-monospace">{{ item.color }}</span>
+                            <input class="form-control form-control-color flex-grow-0" style="width: 3rem;" type="color" v-model="item.color" />
+                            <input class="form-control font-monospace" type="text" style="width: calc(8ch + 1.5rem);" v-model="item.color" />
                         </div>
                     </div>
                     <div class="flex-grow-1 me-2">
@@ -171,6 +203,14 @@ const copyText = () => {
         </div>
         <div class="my-2 row">
             <div class="col-lg-2 col-sm-4 col-form-label">
+                プレビュー
+            </div>
+            <div class="col-lg-10 col-sm-8">
+                <div class="rounded border px-2 text-preview" v-html="generatedHTML"></div>
+            </div>
+        </div>
+        <div class="my-2 row">
+            <div class="col-lg-2 col-sm-4 col-form-label">
                 出来上がり
             </div>
             <div class="col-lg-10 col-sm-8">
@@ -185,17 +225,13 @@ const copyText = () => {
 </template>
 
 <style scoped>
-.logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+.text-preview {
+    font-size: 1.5rem;
+    line-height: 3rem;
+    height: calc(3rem + 20px);
+    padding-bottom: 20px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
-
-.logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-    filter: drop-shadow(0 0 2em #42b883aa);
-}</style>
+</style>
