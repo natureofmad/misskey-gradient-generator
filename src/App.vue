@@ -226,6 +226,20 @@ const copyText = () => {
                 </div>
             </div>
         </div>
+        <div class="my-2 row align-items-center">
+            <div class="col-lg-2 col-sm-4 col-form-label">
+                ついでに作者をフォロー<br>
+                （大感謝）
+            </div>
+            <div class="col-lg-10 col-sm-8 d-flex align-items-center position-relative">
+                <img class="avatar rounded-circle me-2" src="/icons.jpg" />
+                <div class="profile">
+                    <div>とんこう科学部（大阪府立富田林中学校・高等学校科学部）</div>
+                    <div>@natureofmad_@misskey.io</div>
+                </div>
+                <a class="btn btn-outline-success stretched-link" target="_blank" href="https://misskey.io/@natureofmad_">フォロー</a>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -239,5 +253,17 @@ const copyText = () => {
     overflow-y: hidden;
     white-space: nowrap;
     font-weight: 700;
+}
+.avatar {
+    height: 32px;
+}
+.profile div:nth-child(1) {
+    font-weight: 700;
+    font-size: 1.1em;
+    line-height: 1.2em;
+}
+.profile div:nth-child(2) {
+    font-size: 0.9em;
+    color: #636363;
 }
 </style>
