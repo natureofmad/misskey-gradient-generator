@@ -130,7 +130,7 @@ const saveColorSet = () => {
         }
     } else {
         userPresets.value.push(newPreset);
-        presetIndex.value = userPresets.value.length - 1;
+        presetIndex.value = `u_${userPresets.value.length - 1}`;
     }
   
     try {
