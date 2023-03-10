@@ -123,12 +123,14 @@ const saveColorSet = () => {
     if (deleteItem != -1) {
         if (confirm("同じ名前のプリセットがすでに存在します。\n上書き保存しますか？")) {
             userPresets.value.splice(deleteItem, 1, newPreset);
+            presetIndex.value = `u_${deleteItem}`;
         } else {
             saveColorSet();
             return;
         }
     } else {
         userPresets.value.push(newPreset);
+        presetIndex.value = userPresets.value.length - 1;
     }
   
     try {
