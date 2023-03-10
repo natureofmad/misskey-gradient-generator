@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 const presets = [
 {
@@ -56,6 +56,14 @@ const presets = [
     }
 ];
 
+const userPresets = ref([]);
+const presetState = ref(0);
+/**
+ * 0 ... non-preset / preset with changes (saveable)
+ * 1 ... default preset
+ * 2 ... user preset, unchanged
+ */
+
 const colorSteps = ref([
     {
         color: "#000000",
@@ -76,23 +84,82 @@ const addColorStep = () => {
         color: "",
         position: 0
     });
+    presetState.value = 0;
 };
 
 const equializeColorStep = () => {
     colorSteps.value.sort((a, b) => a.position - b.position).forEach((e, i) => {
         e.position = Math.round(100 / (colorSteps.value.length - 1) * i);
     });
+    presetState.value = 0;
 };
 
 const deleteColorStep = (index) => {
     colorSteps.value.splice(index, 1);
+    presetState.value = 0;
 };
 
 const applyPreset = (pI) => {
-    if (isNaN(pI)) {
+    const index = parseInt(pI.substring(2));
+    if (pI.startsWith("d_")) {
+        colorSteps.value = JSON.parse(JSON.stringify(presets[index].steps));
+        presetState.value = 1;
+    } else if (pI.startsWith("u_")) {
+        colorSteps.value = JSON.parse(JSON.stringify(userPresets.value[index].steps));
+        presetState.value = 2;
+    }
+}
+
+const saveColorSet = () => {
+    const name = prompt("新しいプリセットの名前を入力してください\n既存のプリセット名を入力すると、上書き保存できます\n[キャンセル] で処理中断");
+    if (name == null) {
         return;
     }
-    colorSteps.value = JSON.parse(JSON.stringify(presets[pI].steps));
+    const deleteItem = userPresets.value.findIndex((e) => e.name == name);
+    const newPreset = {
+        name,
+        steps: colorSteps.value
+    };
+    if (deleteItem != -1) {
+        if (confirm("同じ名前のプリセットがすでに存在します。\n上書き保存しますか？")) {
+            userPresets.value.splice(deleteItem, 1, newPreset);
+        } else {
+            saveColorSet();
+            return;
+        }
+    } else {
+        userPresets.value.push(newPreset);
+    }
+  
+    try {
+        localStorage.setItem("msky_gradient_presets", JSON.stringify(userPresets.value));
+        alert("保存に成功しました");
+        presetState.value = 2;
+    } catch (err) {
+        console.error(err);
+        alert("保存に失敗しました");
+    }
+};
+
+const deleteColorSet = () => {
+    const index = parseInt(presetIndex.value.substring(2));
+    if (confirm("このプリセットを削除しますか？")) {
+        const deleteItem = userPresets.value.findIndex((e) => e.name == userPresets.value[index].name);
+        if (deleteItem == -1) {
+            alert("該当のプリセットが見つかりませんでした");
+        } else {
+            userPresets.value.splice(deleteItem, 1);
+            try {
+                localStorage.setItem("msky_gradient_presets", JSON.stringify(userPresets.value));
+                alert("削除に成功しました");
+                presetState.value = 0;
+                presetIndex.value = "";
+            } catch (err) {
+                console.error(err);
+                alert("保存に失敗しました");
+            }
+        }
+    }
 }
 
 function sanitizeHTMLString(str) {
@@ -157,6 +224,13 @@ const copyText = () => {
         alert("コピーに失敗しました");
     })
 }
+
+onMounted(() => {
+    const localStorage = window.localStorage.getItem("msky_gradient_presets");
+    if (localStorage) {
+        userPresets.value = JSON.parse(localStorage);
+    }
+})
 </script>
 <template>
     <div class="mt-3 container mb-5" id="app">
@@ -168,7 +242,12 @@ const copyText = () => {
                     <div class="input-group">
                         <select class="form-select" v-model="presetIndex">
                             <option value="">【プリセットから選ぶ】</option>
-                            <option v-for="item, index in presets" :value="index">{{item.name}}</option>
+                            <optgroup label="デフォルト">
+                                <option v-for="item, index in presets" :value="`d_${index}`">{{item.name}}</option>
+                            </optgroup>
+                            <optgroup label="ユーザープリセット">
+                                <option v-for="item, index in userPresets" :value="`u_${index}`">{{item.name}}</option>
+                            </optgroup>
                         </select>
                         <button class="btn btn-outline-primary" @click="applyPreset(presetIndex)">適用</button>
                     </div>
@@ -176,13 +255,13 @@ const copyText = () => {
                 <div class="d-flex mb-2" v-for="item, index in colorSteps">
                     <div class="flex-shrink-0 me-2">
                         <div class="input-group">
-                            <input class="form-control form-control-color flex-grow-0" style="width: 3rem;" type="color" v-model="item.color" />
-                            <input class="form-control font-monospace" maxlength="7" type="text" style="width: calc(8ch + 1.5rem);" v-model="item.color" />
+                            <input class="form-control form-control-color flex-grow-0" style="width: 3rem;" type="color" @change="presetState = 0" v-model="item.color" />
+                            <input class="form-control font-monospace" maxlength="7" type="text" style="width: calc(8ch + 1.5rem);" @change="presetState = 0" v-model="item.color" />
                         </div>
                     </div>
                     <div class="flex-grow-1 me-2">
                         <div class="input-group">
-                            <input class="form-control" type="number" min="0" max="100" v-model="item.position" />
+                            <input class="form-control" type="number" min="0" max="100" @change="presetState = 0" v-model="item.position" />
                             <span class="input-group-text">%</span>
                         </div>
                     </div>
@@ -191,8 +270,10 @@ const copyText = () => {
                     </div>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-secondary me-1" @click="addColorStep()">グラデーション位置を追加</button>
-                    <button class="btn btn-secondary mr-1" @click="equializeColorStep()">均等配置</button>
+                    <button class="btn btn-secondary me-1" @click="addColorStep()">色位置を追加</button>
+                    <button class="btn btn-secondary mx-1" @click="equializeColorStep()">均等配置</button>
+                    <button class="btn btn-secondary ms-1" v-if="presetState == 0" @click="saveColorSet()">この色を保存</button>
+                    <button class="btn btn-danger ms-1" v-else-if="presetState == 2" @click="deleteColorSet()">このプリセットを削除</button>
                 </div>
                 <div class="rounded border py-4" :style="CSSGradient">
 
