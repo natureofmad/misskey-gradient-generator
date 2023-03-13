@@ -250,8 +250,8 @@ onMounted(() => {
     <div class="mt-3 container mb-5" id="app">
         <h2 class="mb-4">Misskey グラデーション文字作成ツール</h2>
         <div class="alert alert-success alert-dismissible text-center my-5" v-if="!hideBanner">
-            <p><a class="text-success" href="https://misskey.io/@noxy">@noxy 氏</a>によってレインボーの生成はプラグインでできるようになったぞ！</p>
-            <p>レインボーしか使うつもり無いなら、プラグインのほうが断然早くて良いぞ！</p>
+            <p><a class="text-success" href="https://misskey.io/@noxy">@noxy 氏</a>によって、レインボーの生成はMisskeyプラグインでできるようになりました！</p>
+            <p>レインボーしか使うつもり無いなら、プラグインのほうが楽ですよ！</p>
             <a class="btn btn-success" target="_blank" href="https://misskey.io/notes/9ca5s1nfty">Misskey 用プラグインをインストール</a>
             <button @click="hideSuccessorBanner()" type="button" class="btn-close" aria-label="Close"></button>
         </div>
