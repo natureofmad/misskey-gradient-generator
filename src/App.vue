@@ -227,20 +227,33 @@ const copyText = () => {
     })
 }
 
+// プラグイン案内
+const hideBanner = ref(false);
+
+const hideSuccessorBanner = () => {
+    hideBanner.value = true;
+    window.localStorage.setItem("msky_gradient_successor_banner", "hide");
+};
+
 onMounted(() => {
-    const localStorage = window.localStorage.getItem("msky_gradient_presets");
-    if (localStorage) {
-        userPresets.value = JSON.parse(localStorage);
+    const presetsStore = window.localStorage.getItem("msky_gradient_presets");
+    if (presetsStore) {
+        userPresets.value = JSON.parse(presetsStore);
+    }
+    const bannerPreference = window.localStorage.getItem("msky_gradient_successor_banner");
+    if (bannerPreference) {
+        hideBanner.value = (bannerPreference == "hide");
     }
 })
 </script>
 <template>
     <div class="mt-3 container mb-5" id="app">
         <h2 class="mb-4">Misskey グラデーション文字作成ツール</h2>
-        <div class="alert alert-success text-center my-4">
+        <div class="alert alert-success alert-dismissible text-center my-5" v-if="!hideBanner">
             <p><a class="text-success" href="https://misskey.io/@noxy">@noxy 氏</a>によってレインボーの生成はプラグインでできるようになったぞ！</p>
             <p>レインボーしか使うつもり無いなら、プラグインのほうが断然早くて良いぞ！</p>
             <a class="btn btn-success" target="_blank" href="https://misskey.io/notes/9c9x2h199e">Misskey 用プラグインをインストール</a>
+            <button @click="hideSuccessorBanner()" type="button" class="btn-close" aria-label="Close"></button>
         </div>
         <div class="my-2 row">
             <label for="startColor" class="col-lg-2 col-sm-4 col-form-label">グラデーション作成</label>
