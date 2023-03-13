@@ -238,9 +238,9 @@ onMounted(() => {
     <div class="mt-3 container mb-5" id="app">
         <h2 class="mb-4">Misskey グラデーション文字作成ツール</h2>
         <div class="alert alert-success text-center my-4">
-            <p>@noxy 氏によってレインボーの生成はプラグインでできるようになったぞ！</p>
+            <p><a href="https://misskey.io/@noxy">@noxy 氏</a>によってレインボーの生成はプラグインでできるようになったぞ！</p>
             <p>レインボーしか使うつもり無いなら、プラグインのほうが断然早くて良いぞ！</p>
-            <a class="btn btn-success" href="https://misskey.io/notes/9c9x2h199e">Misskey 用プラグインをインストール</a>
+            <a class="btn btn-success" target="_blank" href="https://misskey.io/notes/9c9x2h199e">Misskey 用プラグインをインストール</a>
         </div>
         <div class="my-2 row">
             <label for="startColor" class="col-lg-2 col-sm-4 col-form-label">グラデーション作成</label>
