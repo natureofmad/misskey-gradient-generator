@@ -252,7 +252,7 @@ onMounted(() => {
         <div class="alert alert-success alert-dismissible text-center my-5" v-if="!hideBanner">
             <p><a class="text-success" href="https://misskey.io/@noxy">@noxy 氏</a>によってレインボーの生成はプラグインでできるようになったぞ！</p>
             <p>レインボーしか使うつもり無いなら、プラグインのほうが断然早くて良いぞ！</p>
-            <a class="btn btn-success" target="_blank" href="https://misskey.io/notes/9c9x2h199e">Misskey 用プラグインをインストール</a>
+            <a class="btn btn-success" target="_blank" href="https://misskey.io/notes/9ca5s1nfty">Misskey 用プラグインをインストール</a>
             <button @click="hideSuccessorBanner()" type="button" class="btn-close" aria-label="Close"></button>
         </div>
         <div class="my-2 row">
