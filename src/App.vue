@@ -251,7 +251,7 @@ onMounted(() => {
         <h2 class="mb-4">Misskey グラデーション文字作成ツール</h2>
         <div class="alert alert-success alert-dismissible text-center my-5 container-fluid" v-if="!hideBanner">
             <div class="row">
-                <div class="col-12 col-lg-6">
+                <div class="col-12 mb-4 mb-lg-0 col-lg-6">
                     <p><a class="text-success" href="https://misskey.io/@noxy">@noxy 氏</a>によって、レインボーの生成はMisskeyプラグインでできるようになりました！<br>レインボーしか使うつもり無いなら、プラグインのほうが楽ですよ！</p>
                     <a class="btn btn-success" target="_blank" href="https://misskey.io/notes/9ca5s1nfty">Misskey 用プラグインをインストール</a>
                 </div>
