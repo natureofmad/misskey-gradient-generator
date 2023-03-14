@@ -249,10 +249,17 @@ onMounted(() => {
 <template>
     <div class="mt-3 container mb-5" id="app">
         <h2 class="mb-4">Misskey グラデーション文字作成ツール</h2>
-        <div class="alert alert-success alert-dismissible text-center my-5" v-if="!hideBanner">
-            <p><a class="text-success" href="https://misskey.io/@noxy">@noxy 氏</a>によって、レインボーの生成はMisskeyプラグインでできるようになりました！</p>
-            <p>レインボーしか使うつもり無いなら、プラグインのほうが楽ですよ！</p>
-            <a class="btn btn-success" target="_blank" href="https://misskey.io/notes/9ca5s1nfty">Misskey 用プラグインをインストール</a>
+        <div class="alert alert-success alert-dismissible text-center my-5 container-fluid" v-if="!hideBanner">
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <p><a class="text-success" href="https://misskey.io/@noxy">@noxy 氏</a>によって、レインボーの生成はMisskeyプラグインでできるようになりました！<br>レインボーしか使うつもり無いなら、プラグインのほうが楽ですよ！</p>
+                    <a class="btn btn-success" target="_blank" href="https://misskey.io/notes/9ca5s1nfty">Misskey 用プラグインをインストール</a>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <p><a class="text-success" href="https://misskey.io/@secineralyr">しせる 氏</a>によって、グラデーションの生成はMisskeyプラグインでできるようになりました！<br>グラデーション生成をエディタ内で完結できるので、プラグインのほうが楽ですよ！</p>
+                    <a class="btn btn-success" target="_blank" href="https://misskey.io/@secineralyr/pages/sec_gradient_plugin">Misskey 用プラグインをインストール</a>
+                </div>
+            </div>
             <button @click="hideSuccessorBanner()" type="button" class="btn-close" aria-label="Close"></button>
         </div>
         <div class="my-2 row">
