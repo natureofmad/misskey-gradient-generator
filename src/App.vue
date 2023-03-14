@@ -214,13 +214,13 @@ const generatedHTML = computed(() => {
     }).join("");
 });
 
-const copyText = () => {
+const copyText = (text) => {
     if (!navigator.clipboard) {
         alert("このブラウザは対応していません");
         return;
     }
 
-    navigator.clipboard.writeText(generatedText.value).then(() => {
+    navigator.clipboard.writeText(text).then(() => {
         alert("コピー成功");
     }).catch(() => {
         alert("コピーに失敗しました");
@@ -234,6 +234,9 @@ const hideSuccessorBanner = () => {
     hideBanner.value = true;
     window.localStorage.setItem("msky_gradient_successor_banner", "hide");
 };
+
+// プラグインプリセット用
+const mKyPresetStr = computed(() => colorSteps.value.map((e) => `(${e.color.substring(1)},${e.position})`).join(","))
 
 onMounted(() => {
     const presetsStore = window.localStorage.getItem("msky_gradient_presets");
@@ -331,6 +334,17 @@ onMounted(() => {
                     <input type="text" class="form-control" readonly disabled :value="generatedText" />
                     <button class="btn btn-outline-primary" @click="copyText()">コピー</button>
                     <a :href="`https://misskey.io/share?text=${encodeURIComponent(generatedText)}`" class="btn btn-success" target="_blank">ノートする</a>
+                </div>
+            </div>
+        </div>
+        <div class="my-2 row">
+            <div class="col-lg-2 col-sm-4 col-form-label">
+                <a href="https://misskey.io/@secineralyr">Misskey プラグイン</a>用構文
+            </div>
+            <div class="col-lg-10 col-sm-8">
+                <div class="input-group">
+                    <input type="text" class="form-control" readonly disabled :value="mKyPresetStr" />
+                    <button class="btn btn-outline-primary" @click="copyText(mKyPresetStr)">コピー</button>
                 </div>
             </div>
         </div>
