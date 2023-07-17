@@ -2,56 +2,56 @@
 import { ref, computed, onMounted } from 'vue';
 
 const presets = [
-{
+    {
         name: "レインボー",
         steps: [
-            {"color":"#ff0000","position":0},
-            {"color":"#ffa500","position":17},
-            {"color":"#ffff00","position":33},
-            {"color":"#008000","position":50},
-            {"color":"#00ffff","position":67},
-            {"color":"#0000ff","position":83},
-            {"color":"#800080","position":100}
+            { "color": "#ff0000", "position": 0 },
+            { "color": "#ffa500", "position": 17 },
+            { "color": "#ffff00", "position": 33 },
+            { "color": "#008000", "position": 50 },
+            { "color": "#00ffff", "position": 67 },
+            { "color": "#0000ff", "position": 83 },
+            { "color": "#800080", "position": 100 }
         ]
     },
     {
         name: "レインボー改",
         steps: [
-            {"color":"#ff0000","position":0},
-            {"color":"#ffa500","position":17},
-            {"color":"#ffff00","position":33},
-            {"color":"#00ff00","position":50},
-            {"color":"#00ffff","position":67},
-            {"color":"#0000ff","position":83},
-            {"color":"#ff00ff","position":100}
+            { "color": "#ff0000", "position": 0 },
+            { "color": "#ffa500", "position": 17 },
+            { "color": "#ffff00", "position": 33 },
+            { "color": "#00ff00", "position": 50 },
+            { "color": "#00ffff", "position": 67 },
+            { "color": "#0000ff", "position": 83 },
+            { "color": "#ff00ff", "position": 100 }
         ]
     },
     {
         name: "黄桃",
         steps: [
-            {color: "#fa709a", position: 0},
-            {color: "#fee140", position: 100}
+            { color: "#fa709a", position: 0 },
+            { color: "#fee140", position: 100 }
         ]
     },
     {
         name: "もえるオレンジ",
         steps: [
-            {color: "#f83600", position: 0},
-            {color: "#f9d423", position: 100}
+            { color: "#f83600", position: 0 },
+            { color: "#f9d423", position: 100 }
         ]
     },
     {
         name: "サイバー青",
         steps: [
-            {color: "#6a11cb", position: 0},
-            {color: "#2575fc", position: 100}
+            { color: "#6a11cb", position: 0 },
+            { color: "#2575fc", position: 100 }
         ]
     },
     {
         name: "サイバーピンク",
         steps: [
-            {color: "#c471f5", position: 0},
-            {color: "#fa71cd", position: 100}
+            { color: "#c471f5", position: 0 },
+            { color: "#fa71cd", position: 100 }
         ]
     }
 ];
@@ -132,7 +132,7 @@ const saveColorSet = () => {
         userPresets.value.push(newPreset);
         presetIndex.value = `u_${userPresets.value.length - 1}`;
     }
-  
+
     try {
         localStorage.setItem("msky_gradient_presets", JSON.stringify(userPresets.value));
         alert("保存に成功しました");
@@ -250,9 +250,8 @@ onMounted(() => {
     <div class="mt-3 container mb-5" id="app">
         <h2 class="mb-4">Misskey グラデーション文字作成ツール</h2>
         <div class="alert alert-success alert-dismissible text-center my-5" v-if="!hideBanner">
-            <p><a class="text-success" href="https://misskey.io/@noxy">@noxy 氏</a>によって、レインボーの生成はMisskeyプラグインでできるようになりました！</p>
-            <p>レインボーしか使うつもり無いなら、プラグインのほうが楽ですよ！</p>
-            <a class="btn btn-success" target="_blank" href="https://misskey.io/notes/9ca5s1nfty">Misskey 用プラグインをインストール</a>
+            <p><a class="text-success" href="https://misskey.io/@secineralyr">しせる 氏</a>によって、グラデーションの生成はMisskeyプラグインでできるようになりました！<br>グラデーション生成をエディタ内で完結できるので、プラグインのほうが楽ですよ！</p>
+            <a class="btn btn-success" target="_blank" href="https://misskey.io/@secineralyr/pages/sec_gradient_plugin">Misskey 用プラグインをインストール</a>
             <button @click="hideSuccessorBanner()" type="button" class="btn-close" aria-label="Close"></button>
         </div>
         <div class="my-2 row">
@@ -263,10 +262,10 @@ onMounted(() => {
                         <select class="form-select" v-model="presetIndex">
                             <option value="">【プリセットから選ぶ】</option>
                             <optgroup label="デフォルト">
-                                <option v-for="item, index in presets" :value="`d_${index}`">{{item.name}}</option>
+                                <option v-for="item, index in presets" :value="`d_${index}`">{{ item.name }}</option>
                             </optgroup>
                             <optgroup label="ユーザープリセット">
-                                <option v-for="item, index in userPresets" :value="`u_${index}`">{{item.name}}</option>
+                                <option v-for="item, index in userPresets" :value="`u_${index}`">{{ item.name }}</option>
                             </optgroup>
                         </select>
                         <button class="btn btn-outline-primary" @click="applyPreset(presetIndex)">適用</button>
@@ -355,16 +354,18 @@ onMounted(() => {
     white-space: nowrap;
     font-weight: 700;
 }
+
 .avatar {
     height: 32px;
 }
+
 .profile div:nth-child(1) {
     font-weight: 700;
     font-size: 1.1em;
     line-height: 1.2em;
 }
+
 .profile div:nth-child(2) {
     font-size: 0.9em;
     color: #636363;
-}
-</style>
+}</style>
