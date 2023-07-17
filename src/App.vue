@@ -53,7 +53,21 @@ const presets = [
             { color: "#c471f5", position: 0 },
             { color: "#fa71cd", position: 100 }
         ]
-    }
+    },
+    {
+        name: "Misskey デフォルト",
+        steps: [
+            { color: "#86b300", position: 0 },
+            { color: "#4ab300", position: 100 }
+        ]
+    },
+    {
+        name: "Misskey.design",
+        steps: [
+            { color: "#fc4774", position: 0 },
+            { color: "#f9e001", position: 100 }
+        ]
+    },
 ];
 
 const userPresets = ref([]);
