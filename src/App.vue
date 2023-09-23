@@ -243,10 +243,16 @@ const copyText = () => {
 
 // プラグイン案内
 const hideBanner = ref(false);
+const hideUpdBanner = ref(false);
 
 const hideSuccessorBanner = () => {
     hideBanner.value = true;
     window.localStorage.setItem("msky_gradient_successor_banner", "hide");
+};
+
+const hideUpdateBanner = () => {
+    hideUpdBanner.value = true;
+    window.localStorage.setItem("msky_gradient_update_banner", "hide");
 };
 
 onMounted(() => {
@@ -258,17 +264,25 @@ onMounted(() => {
     if (bannerPreference) {
         hideBanner.value = (bannerPreference == "hide");
     }
+    const updBannerPreference = window.localStorage.getItem("msky_gradient_update_banner");
+    if (updBannerPreference) {
+        hideUpdBanner.value = (updBannerPreference == "hide");
+    }
 })
 </script>
 <template>
     <div class="mt-3 container mb-5" id="app">
         <h2 class="mb-4">Misskey グラデーション文字作成ツール</h2>
-        <div class="alert alert-success alert-dismissible text-center my-5" v-if="!hideBanner">
+        <div class="alert alert-success alert-dismissible text-center mb-2" v-if="!hideBanner">
             <p><a class="text-success" href="https://misskey.io/@secineralyr">しせる 氏</a>によって、グラデーションの生成はMisskeyプラグインでできるようになりました！<br>グラデーション生成をエディタ内で完結できるので、プラグインのほうが楽ですよ！</p>
             <a class="btn btn-success" target="_blank" href="https://misskey.io/@secineralyr/pages/sec_gradient_plugin">Misskey 用プラグインをインストール</a>
             <button @click="hideSuccessorBanner()" type="button" class="btn-close" aria-label="Close"></button>
         </div>
-        <div class="my-2 row">
+        <div class="alert alert-success alert-dismissible text-center" v-if="!hideUpdBanner">
+            <p>Misskey v2023.9.0 から、<code>$[rainbow ]</code> 構文を利用した際に<br>「動きのあるMFMを有効」がオフになっている場合でもレインボー文字が表示されるようになりました！<br>お使いのサーバーへの反映をお待ちください🎉</p>
+            <button @click="hideUpdateBanner()" type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+        <div class="my-4 row">
             <label for="startColor" class="col-lg-2 col-sm-4 col-form-label">グラデーション作成</label>
             <div class="col-lg-10 col-sm-8">
                 <div class="mb-2">
@@ -336,7 +350,7 @@ onMounted(() => {
                 <div class="input-group">
                     <input type="text" class="form-control" readonly disabled :value="generatedText" />
                     <button class="btn btn-outline-primary" @click="copyText()">コピー</button>
-                    <a :href="`https://misskey.io/share?text=${encodeURIComponent(generatedText)}`" class="btn btn-success" target="_blank">ノートする</a>
+                    <a :href="`https://fedibuzzer.ajr-news.com/share?text=${encodeURIComponent(generatedText)}`" class="btn btn-success" target="_blank">ノートする</a>
                 </div>
             </div>
         </div>
