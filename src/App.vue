@@ -68,6 +68,13 @@ const presets = [
             { color: "#f9e001", position: 100 }
         ]
     },
+    {
+        name: "にじみす",
+        steps: [
+            { color: "#3de099", position: 0 },
+            { color: "#00c4ee", position: 100 }
+        ]
+    }
 ];
 
 const userPresets = ref([]);
